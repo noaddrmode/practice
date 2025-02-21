@@ -67,7 +67,12 @@ root = [4,2,7,1,3,6,9];
 rootNode = new TreeNode(root[0]);
 
 for (let i = 0; i < root.length; i++) {
-  insert(root[i], rootNode);
-  console.log(JSON.stringify(rootNode));
+  insert(root[i], rootNode);  
 }
+console.log(JSON.stringify(rootNode, null, 2));
+
+console.log('======\n')
+
+invertTree(rootNode);
+console.log(JSON.stringify(rootNode, null, 2));
 
