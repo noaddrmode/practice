@@ -1,0 +1,61 @@
+Approach 1: Recursive
+
+This is a classic tree problem that is best-suited for a recursive approach.
+
+Algorithm
+
+The inverse of an empty tree is the empty tree. The inverse of a tree with rootr, and subtreesrightandleft, is a tree with rootr, whose right subtree is the inverse ofleft, and whose left subtree is the inverse ofright
+
+python
+```
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return None
+        
+        right = self.invertTree(root.right)
+        left = self.invertTree(root.left)
+        root.left = right
+        root.right = left
+        return root
+```
+
+Complexity Analysis
+
+Since each node in the tree is visited only once, the time complexity isO(n), wherenis the number of nodes in the tree. We cannot do better than that, since at the very least we have to visit each node to invert it.
+
+Because of recursion,O(h)function calls will be placed on the stack in the worst case, where h is the height of the tree. Becauseh∈O(n), the space complexity isO(n).
+
+Approach 2: Iterative
+
+Alternatively, we can solve the problem iteratively, in a manner similar to breadth-first search.
+
+Algorithm
+
+The idea is that we need to swap the left and right child of all nodes in the tree. So we create a queue to store nodes whose left and right child have not been swapped yet. Initially, only the root is in the queue. As long as the queue is not empty, remove the next node from the queue, swap its children, and add the children to the queue. Null nodes are not added to the queue. Eventually, the queue will be empty and all the children swapped, and we return the original root.
+python
+```
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return None
+        
+        queue = collections.deque([root])
+        while queue:
+            current = queue.popleft()
+            current.left, current.right = current.right, current.left
+            
+            if current.left:
+                queue.append(current.left)
+            
+            if current.right:
+                queue.append(current.right)
+        
+        return root
+```        
+
+Complexity Analysis
+
+Since each node in the tree is visited / added to the queue only once, the time complexity isO(n), wherenis the number of nodes in the tree.
+
+Space complexity isO(n), since in the worst case, the queue will contain all nodes in one level of the binary tree. For a full binary tree, the leaf level has⌈2n​⌉=O(n)leaves.
